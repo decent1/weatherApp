@@ -9,15 +9,16 @@ import {
   View,
 } from 'react-native';
 import React, {useEffect, useState} from 'react';
-import {getWeatherAPI} from '../config';
+import {getForecastAPI, getWeatherAPI} from '../config';
 import Weather from '../component/Weather';
 import DropDown from '../component/DropDown';
 import axios from 'axios';
+import ForcastWeathe from '../component/ForcastWeathe';
 const Home = () => {
   const [weatherData, setWeatherData] = useState(null);
   const [loaded, setLoaded] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
-
+  const [forecastData, setForecastData] = useState(null);
   const fetchWeatherData = async cityName => {
     setLoaded(false);
     const apiCall = getWeatherAPI(cityName);
@@ -53,9 +54,29 @@ const Home = () => {
       setLoaded(true);
     }
   };
-
+  const fetchForecastData = async (cityName) => {
+    setLoaded(false);
+    const forecastApiCall = getForecastAPI(cityName);
+    try {
+      const response = await axios?.get(forecastApiCall, {
+        timeout: 10000,
+      });
+      // console.log('Forecast Response:', response?.data);
+      if (response?.status === 200) {
+        setForecastData(response.data);
+      } else {
+        setForecastData(null);
+      }
+      setLoaded(true);
+    } catch (error) {
+      console.log(error,'==forecast');
+      // ... (Your existing error handling logic)
+      setLoaded(true);
+    }
+  };
   useEffect(() => {
     fetchWeatherData('Karachi');
+    fetchForecastData('Karachi')
   }, []);
 
   if (!loaded) {
@@ -90,6 +111,7 @@ const Home = () => {
           </View>
         ) : (
           <Weather
+          forecastData={forecastData}
             weatherData={weatherData}
             fetchWeatherData={fetchWeatherData}
           />
@@ -104,7 +126,6 @@ export default Home;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
     alignItems: 'center',
   },
   backgroundImg: {

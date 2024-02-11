@@ -9,8 +9,9 @@ import {
 } from 'react-native';
 import {haze, rainy, snow, sunny} from '../assets/backgroundImages/index';
 import DropDown from './DropDown';
+import ForcastWeathe from './ForcastWeathe';
 
-export default function Weather({weatherData, fetchWeatherData}) {
+export default function Weather({weatherData, fetchWeatherData,forecastData}) {
   const [backgroundImage, setBackgroundImage] = useState(null);
 
   const {
@@ -72,6 +73,8 @@ export default function Weather({weatherData, fetchWeatherData}) {
             </View>
           </View>
         </View>
+
+        <ForcastWeathe forecastData={forecastData}/>
       </ImageBackground>
     </View>
   );
@@ -137,6 +140,7 @@ const styles = StyleSheet.create({
     borderTopWidth: 1,
     borderColor: 'lightgrey',
     borderRadius: 10,
-    paddingTop: 10,
+    paddingVertical: 15,
+    borderBottomWidth:1
   },
 });
