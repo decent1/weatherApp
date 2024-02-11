@@ -48,7 +48,7 @@ export default function ForcastWeathe({forecastData}) {
           </View>
           <View style={styles.box}>
             <Text style={styles.text}>
-              {details?.tempMin} / {details?.tempMax} C
+              {details?.tempMin} / {details?.tempMax}°C
             </Text>
           </View>
         </View>
